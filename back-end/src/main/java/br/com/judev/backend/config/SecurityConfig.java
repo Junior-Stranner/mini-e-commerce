@@ -22,13 +22,25 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+/*Habilita o Spring Security na aplicação.
+Permite configurar a segurança da aplicação
+usando classes que estendem SecurityConfigurerAdapter ou configurando um bean do tipo SecurityFilterChain.*/
 @EnableWebSecurity
+
+/*
+Habilita a segurança baseada em anotações nos métodos da aplicação.
+Permite o uso de anotações como @PreAuthorize, @PostAuthorize, @Secured,
+e @RolesAllowed para definir regras de segurança no nível do método.*/
 @EnableMethodSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
+
+    public SecurityConfig(UserRepository userRepository, JwtService jwtService) {
+        this.userRepository = userRepository;
+        this.jwtService = jwtService;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -61,7 +73,6 @@ public class SecurityConfig {
                         // Qualquer outra requisição deve ser autenticada.
                         .anyRequest().authenticated()
                 )
-
                 // Configura o gerenciamento de sessões.
                 .sessionManagement(session -> session
                         // Define a política de criação de sessões como STATELESS.
@@ -69,7 +80,6 @@ public class SecurityConfig {
                         // uma prática comum em APIs REST que utilizam tokens JWT.
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-
                 // Adiciona o filtro de autenticação JWT antes do filtro padrão de autenticação
                 // por nome de usuário e senha (UsernamePasswordAuthenticationFilter).
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -119,3 +129,22 @@ public class SecurityConfig {
     }
 
 }
+
+
+/*@EnableWebSecurity
+Por que é necessário: O Spring Security, por padrão, aplica uma configuração básica de
+segurança, mas para personalizar o comportamento (como autenticação, autorização, ou filtros personalizados),
+é necessário habilitar explicitamente a segurança da web.
+ */
+
+/*@EnableMethodSecurity
+Por que é necessário: Às vezes, é necessário aplicar segurança não apenas no
+nível dos endpoints, mas também em métodos de serviços ou outras classes internas.
+Essa anotação permite fazer isso.*/
+
+/*
+@PreAuthorize: Avalia uma expressão de segurança antes de o método ser executado.
+@PostAuthorize: Avalia uma expressão de segurança após o método ser executado.
+@Secured: Especifica os papéis que podem acessar o método.
+@RolesAllowed: Similar a @Secured, mas baseada em JSR-250.
+ */
