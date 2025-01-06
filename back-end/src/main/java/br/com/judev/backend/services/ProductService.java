@@ -1,11 +1,14 @@
 package br.com.judev.backend.services;
 
 import br.com.judev.backend.dto.ProductDTO;
+import br.com.judev.backend.dto.ProductListDTO;
 import br.com.judev.backend.exception.ResourceNotFoundException;
 import br.com.judev.backend.mapper.ProductMapper;
 import br.com.judev.backend.model.Product;
 import br.com.judev.backend.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,6 +52,24 @@ public class ProductService {
         }
         Product updateProduct = productRepository.save(existingProduct);
         return productMapper.toDTO(updateProduct);
+    }
+
+    @Transactional
+    public void deleteProduct(Long id){
+        if(!productRepository.existsById(id)){
+            throw new ResourceNotFoundException("Product not found");
+        }
+        productRepository.deleteById(id);
+    }
+
+    public ProductDTO getProduct(Long id){
+        Product product = productRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Product not found"));
+        return productMapper.toDTO(product);
+    }
+
+    public Page<ProductListDTO> getAllProducts(Pageable pageable) {
+        return productRepository.findAllWithoutComments(pageable);
     }
 
     private String saveImage(MultipartFile image) throws  IOException{
