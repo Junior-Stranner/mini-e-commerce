@@ -8,7 +8,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import br.com.judev.backend.model.User;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 
 @Service
@@ -29,6 +32,10 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(User.Role.USER);
         return userRepository.save(user);
+    }
+
+    public List<User> findAllUsers(){
+        return userRepository.findAll();
     }
 
     public User getUserByEmail(String email){

@@ -3,6 +3,7 @@ package br.com.judev.backend.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,8 @@ public class User implements UserDetails {
     private String email;
     @NotBlank
 
+    @NotBlank
+    @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -37,6 +40,8 @@ public class User implements UserDetails {
 
     private boolean emailConfirmation;
     private String confirmationCode;
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

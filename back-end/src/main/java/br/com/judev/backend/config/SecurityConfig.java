@@ -1,9 +1,12 @@
 package br.com.judev.backend.config;
 
 
+import br.com.judev.backend.model.User;
 import br.com.judev.backend.repositories.UserRepository;
 import br.com.judev.backend.services.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -29,6 +32,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final UserRepository userRepository;
     private final JwtService jwtService;
+
+    Logger log = LoggerFactory.getLogger(UserDetailsService.class);
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -65,11 +71,13 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception{
         return authConfig.getAuthenticationManager();
     }
+
     @Bean
     public UserDetailsService userDetailsService(){
         return username -> (UserDetails) userRepository.findByEmail(username)
                 .orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();

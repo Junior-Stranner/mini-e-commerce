@@ -12,6 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -35,5 +37,9 @@ public class AuthController {
         return ResponseEntity.ok(userService.registerUser(user));
     }
 
+    @GetMapping
+    public List<User>ListAllUsers(){
+        return userService.findAllUsers();
+    }
 }
 
