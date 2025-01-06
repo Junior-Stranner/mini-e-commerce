@@ -1,5 +1,6 @@
 package br.com.judev.backend.repositories;
 
+
 import br.com.judev.backend.model.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 

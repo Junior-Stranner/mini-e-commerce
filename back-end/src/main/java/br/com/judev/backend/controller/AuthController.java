@@ -5,36 +5,26 @@ import br.com.judev.backend.model.User;
 import br.com.judev.backend.services.JwtService;
 import br.com.judev.backend.services.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
-
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtService jwtService;
 
-    @Autowired
-    public AuthController(AuthenticationManager authenticationManager,
-                          UserService userService,
-                          JwtService jwtService) {
-        this.authenticationManager = authenticationManager;
-        this.userService = userService;
-        this.jwtService = jwtService;
-    }
-
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
+        );
         final UserDetails userDetails = userService.getUserByEmail(loginRequest.getEmail());
         final String jwt = jwtService.generateToken(userDetails);
         return ResponseEntity.ok(jwt);
@@ -44,4 +34,6 @@ public class AuthController {
     public ResponseEntity<User> register(@Valid @RequestBody User user){
         return ResponseEntity.ok(userService.registerUser(user));
     }
+
 }
+

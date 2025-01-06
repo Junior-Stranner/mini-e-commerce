@@ -1,13 +1,13 @@
-package br.com.judev.backend;
+package com.example.demo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BackEndApplicationTests {
+class Ecommerce2ApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+	@Test
+	void contextLoads() {
+	}
 
 }

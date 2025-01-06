@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="users")
@@ -24,8 +25,8 @@ public class User implements UserDetails {
     @NotBlank
     @Email
     private String email;
-
     @NotBlank
+
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -40,11 +41,6 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_"+role.name()));
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
     }
 
     @Override
@@ -74,49 +70,5 @@ public class User implements UserDetails {
 
     public enum Role{
         USER, ADMIN
-    }
-
-    public @NotBlank @Email String getEmail() {
-        return email;
-    }
-
-    public void setEmail(@NotBlank @Email String email) {
-        this.email = email;
-    }
-
-    public void setPassword(@NotBlank String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
-
-    public boolean isEmailConfirmation() {
-        return emailConfirmation;
-    }
-
-    public void setEmailConfirmation(boolean emailConfirmation) {
-        this.emailConfirmation = emailConfirmation;
-    }
-
-    public String getConfirmationCode() {
-        return confirmationCode;
-    }
-
-    public void setConfirmationCode(String confirmationCode) {
-        this.confirmationCode = confirmationCode;
     }
 }

@@ -15,11 +15,8 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    // Secret usado para assinar e validar o token. Definido no arquivo de configuração.
     @Value("${jwt.secret}")
     private String secret;
-
-    // Tempo de expiração do token em milissegundos. Definido no arquivo de configuração.
     @Value("${jwt.expiration}")
     private Long expiration;
 

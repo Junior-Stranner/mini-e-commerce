@@ -1,5 +1,6 @@
 package br.com.judev.backend.mapper;
 
+
 import br.com.judev.backend.dto.CartDTO;
 import br.com.judev.backend.dto.CartItemDTO;
 import br.com.judev.backend.model.Cart;
@@ -9,10 +10,8 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface CartMapper {
-
     @Mapping(target = "userId", source = "user.id")
     CartDTO toDTO(Cart Cart);
-
     @Mapping(target="user.id", source = "userId")
     Cart toEntity(CartDTO cartDTO);
 

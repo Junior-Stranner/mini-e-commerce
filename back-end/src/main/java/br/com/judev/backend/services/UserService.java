@@ -3,7 +3,6 @@ package br.com.judev.backend.services;
 import br.com.judev.backend.exception.ResourceNotFoundException;
 import br.com.judev.backend.dto.ChangePasswordRequest;
 import br.com.judev.backend.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,6 @@ public class UserService {
         if(userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new IllegalStateException("Email already taken");
         }
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(User.Role.USER);
         return userRepository.save(user);

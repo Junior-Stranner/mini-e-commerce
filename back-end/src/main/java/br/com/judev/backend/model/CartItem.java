@@ -1,6 +1,5 @@
 package br.com.judev.backend.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
