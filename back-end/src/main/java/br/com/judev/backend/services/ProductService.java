@@ -46,6 +46,7 @@ public class ProductService {
         existingProduct.setDescription(productDTO.getDescription());
         existingProduct.setPrice(productDTO.getPrice());
         existingProduct.setQuantity(productDTO.getQuantity());
+
         if(image != null && !image.isEmpty()){
             String fileName = saveImage(image);
             existingProduct.setImage("/images/"+fileName);
