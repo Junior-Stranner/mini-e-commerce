@@ -34,14 +34,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<User> findAllUsers(){
-        return userRepository.findAll();
-    }
-
     public User getUserByEmail(String email){
         return userRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("User not found"));
     }
-
 
     public void changePassword(String email, ChangePasswordRequest request){
         User user = getUserByEmail(email);
@@ -53,6 +48,17 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void confirmEmail(String email, String confirmationCode){
+        User user = getUserByEmail(email);
+        if(user.getConfirmationCode().equals(confirmationCode)){
+            user.setEmailConfirmation(true);
+            user.setConfirmationCode(null);
+            userRepository.save(user);
+        }
+        else{
+            throw new BadCredentialsException("Invalid confirmation code");
+        }
+    }
 
     private String generateConfirmationCode(){
         Random random = new Random();
@@ -64,5 +70,9 @@ public class UserService {
     public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+    }
+
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
     }
 }

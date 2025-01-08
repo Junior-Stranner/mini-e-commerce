@@ -20,55 +20,57 @@ public class JwtService {
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    // Método para gerar um token JWT baseado nos detalhes do usuário.
     public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>(); // Map para armazenar informações adicionais no token (neste caso, vazio).
-        return createToken(claims, userDetails.getPassword()); // Cria o token usando as informações fornecidas.
+        // Cria um token JWT para o usuário.
+        // As informações do usuário (como username) são usadas como base para o token.
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, userDetails.getUsername());
     }
 
-    // Método privado para criar o token JWT com as informações e o tempo de expiração.
     private String createToken(Map<String, Object> claims, String subject) {
+        // Cria um token JWT configurando as reivindicações, o assunto, as datas e a assinatura.
         return Jwts.builder()
-                .setClaims(claims) // Define as informações adicionais no token.
-                .setSubject(subject) // Define o "subject" do token (geralmente o identificador do usuário).
-                .setIssuedAt(new Date(System.currentTimeMillis())) // Define a data de emissão do token.
-                .setExpiration(new Date(System.currentTimeMillis() + expiration)) // Define a data de expiração do token.
-                .signWith(SignatureAlgorithm.HS256, secret) // Assina o token com o algoritmo HS256 e o secret.
-                .compact(); // Compacta o token em uma string final.
+                .setClaims(claims) // Reivindicações adicionais (vazio por enquanto).
+                .setSubject(subject) // Define o assunto do token, geralmente o username.
+                .setIssuedAt(new Date(System.currentTimeMillis())) // Data de criação do token.
+                .setExpiration(new Date(System.currentTimeMillis() + expiration)) // Data de expiração.
+                .signWith(SignatureAlgorithm.HS256, secret) // Assina o token com o algoritmo HS256 e a chave secreta.
+                .compact(); // Compacta e retorna o token como uma string.
     }
 
-    // Valida o token verificando o username e se o token ainda não expirou.
     public Boolean validateToken(String token, UserDetails userDetails) {
+        // Valida o token verificando se o username é o mesmo e se o token não expirou.
         final String username = extractUsername(token); // Extrai o username do token.
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token)); // Verifica se o username bate e se o token não expirou.
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token)); // Verifica validade.
     }
 
-    // Extrai o username (subject) do token.
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject); // Usa o método genérico extractClaim para pegar o "subject".
+        // Extrai o nome de usuário do token (armazenado como o "subject").
+        return extractClaim(token, Claims::getSubject);
     }
 
-    // Método genérico para extrair qualquer informação do token usando um resolver.
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token); // Recupera todas as claims (informações) do token.
-        return claimsResolver.apply(claims); // Aplica a função resolver para extrair a informação desejada.
+        // Extrai uma reivindicação específica do token usando um resolutor.
+        final Claims claims = extractAllClaims(token); // Obtém todas as reivindicações do token.
+        return claimsResolver.apply(claims); // Aplica o resolutor para extrair o valor desejado.
     }
 
-    // Extrai todas as claims (informações) do token JWT.
     private Claims extractAllClaims(String token) {
+        // Analisa o token e obtém todas as informações contidas nele.
         return Jwts.parser()
-                .setSigningKey(secret) // Define o secret usado para assinar o token.
-                .parseClaimsJws(token) // Analisa o token e valida a assinatura.
-                .getBody(); // Retorna o corpo do token (claims).
+                .setSigningKey(secret) // Configura a chave secreta usada para assinar o token.
+                .parseClaimsJws(token) // Analisa e valida o token.
+                .getBody(); // Retorna o corpo do token, que contém as reivindicações.
     }
 
-    // Verifica se o token está expirado.
     private Boolean isTokenExpired(String token) {
+        // Verifica se o token já expirou.
         return extractExpiration(token).before(new Date()); // Compara a data de expiração com a data atual.
     }
 
-    // Extrai a data de expiração do token.
     private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration); // Usa o método genérico extractClaim para pegar a data de expiração.
+        // Extrai a data de expiração do token.
+        return extractClaim(token, Claims::getExpiration);
     }
+
 }
