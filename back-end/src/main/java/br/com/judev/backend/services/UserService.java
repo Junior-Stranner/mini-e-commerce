@@ -10,19 +10,18 @@ import br.com.judev.backend.model.User;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     public User registerUser(User user){
@@ -31,6 +30,8 @@ public class UserService {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(User.Role.USER);
+        user.setEmailConfirmation(false);
+        emailService.sendConfirmationCode(user);
         return userRepository.save(user);
     }
 
@@ -54,11 +55,11 @@ public class UserService {
             user.setEmailConfirmation(true);
             user.setConfirmationCode(null);
             userRepository.save(user);
-        }
-        else{
+        }else{
             throw new BadCredentialsException("Invalid confirmation code");
         }
     }
+
 
     private String generateConfirmationCode(){
         Random random = new Random();
