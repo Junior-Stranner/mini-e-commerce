@@ -30,6 +30,7 @@ public class UserService {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(User.Role.USER);
+        user.setConfirmationCode(generateConfirmationCode());
         user.setEmailConfirmation(false);
         emailService.sendConfirmationCode(user);
         return userRepository.save(user);
