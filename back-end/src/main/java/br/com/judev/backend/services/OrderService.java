@@ -74,17 +74,30 @@ public class OrderService {
             Product product = productRepository.findById(cartItem.getProduct().getId())
                     .orElseThrow(()-> new EntityNotFoundException("Product not found with id: "+cartItem.getProduct().getId()));
 
-            if(product.getQuantity() == null){
-                throw new IllegalStateException("Product quantity is not set for product "+product.getName());
-            }
-            if(product.getQuantity() < cartItem.getQuantity()){
-                throw new InsufficientStockException("Not enough stock for product "+product.getName());
+            if (product.getQuantity() == null || product.getQuantity() < cartItem.getQuantity()) {
+                throw new InsufficientStockException("Not enough stock for product " + product.getName());
             }
             product.setQuantity(product.getQuantity() - cartItem.getQuantity());
             productRepository.save(product);
 
             return new OrderItem(null, order, product, cartItem.getQuantity(), product.getPrice());
         }).collect(Collectors.toList());
+    }
+
+    public List<OrderDTO> getAllOrders(){
+        return orderMapper.toDTOs(orderRepository.findAll());
+    }
+
+    public List<OrderDTO> getUserOrders(Long userId){
+        return orderMapper.toDTOs(orderRepository.findByUserId(userId));
+    }
+
+    public OrderDTO updateOrderStatus(Long orderId,Order.OrderStatus status){
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(()->new ResourceNotFoundException("Order not found"));
+        order.setStatus(status);
+        Order updatedOrder = orderRepository.save(order);
+        return orderMapper.toDTO(updatedOrder);
     }
 
 }
