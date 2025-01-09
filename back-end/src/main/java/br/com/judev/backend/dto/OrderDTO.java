@@ -1,12 +1,12 @@
 package br.com.judev.backend.dto;
 
 
+import br.com.judev.backend.model.Order;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import com.example.demo.model.Order;
 
 @Data
 public class OrderDTO {
