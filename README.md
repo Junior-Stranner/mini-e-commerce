@@ -7,6 +7,7 @@ Register User and Criptographing the Password , Can see the user become a confir
 ![Captura de tela 2025-01-09 181222](https://github.com/user-attachments/assets/f8a76c9f-4eb7-4501-b6f1-9f782e52c54c)
 
 with the  Code you gonna confirm the email 
+
 ![Captura de tela 2025-01-09 181408](https://github.com/user-attachments/assets/9b243247-5320-4818-9dde-ba1156c10941)
 
 
