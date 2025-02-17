@@ -4,6 +4,9 @@ package br.com.judev.backend.config;
 import br.com.judev.backend.model.User;
 import br.com.judev.backend.repositories.UserRepository;
 import br.com.judev.backend.services.JwtService;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,9 +33,25 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
+@SecurityScheme(
+        name = "Bearer Auth",
+        description = "JWT auth description",
+        scheme = "bearer",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        in = SecuritySchemeIn.HEADER
+)
 public class SecurityConfig  {
     private final UserRepository userRepository;
     private final JwtService jwtService;
+
+
+    private static final String[] PERMIT_ALL = {
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-ui.html",
+            "/h2-console/**"
+    };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
