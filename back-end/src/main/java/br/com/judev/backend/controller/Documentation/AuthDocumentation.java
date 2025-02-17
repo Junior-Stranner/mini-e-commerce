@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-public interface AuthControllerDocumentation {
+public interface AuthDocumentation {
 
     @Operation(summary = "Login the user", description = "Authenticates the user and returns a JWT token")
     @ApiResponses(value = {
