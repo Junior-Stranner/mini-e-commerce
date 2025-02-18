@@ -1,6 +1,7 @@
 package br.com.judev.backend.services;
 
-import br.com.judev.backend.dto.CartDTO;
+import br.com.judev.backend.dto.requests.CartDTO;
+import br.com.judev.backend.dto.responses.CartResponseDTO;
 import br.com.judev.backend.exception.InsufficientStockException;
 import br.com.judev.backend.exception.ResourceNotFoundException;
 import br.com.judev.backend.mapper.CartMapper;
@@ -25,7 +26,7 @@ public class CartService {
     private final UserRepository userRepository;
     private final CartMapper cartMapper;
 
-    public CartDTO addToCart(Long userId, Long productId, Integer quantity){
+    public CartResponseDTO addToCart(Long userId, Long productId, Integer quantity){
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new ResourceNotFoundException("User not found"));
         Product product = productRepository.findById(productId)
@@ -54,17 +55,15 @@ public class CartService {
         return cartMapper.toDTO(savedCart);
         }
 
-    public CartDTO getCart(Long userId){
+    public CartResponseDTO getCart(Long userId){
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(()->new ResourceNotFoundException("Cart not found"));
-
         return cartMapper.toDTO(cart);
     }
 
     public void clearCart(Long userId){
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(()->new ResourceNotFoundException("Cart not found"));
-
         cart.getItems().clear();
         cartRepository.save(cart);
     }
@@ -72,7 +71,6 @@ public class CartService {
     public void removeCartItem(Long userId, Long productId) {
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Cart not found for user"));
-
         cart.getItems().removeIf(item -> item.getProduct().getId().equals(productId));
         cartRepository.save(cart);
     }

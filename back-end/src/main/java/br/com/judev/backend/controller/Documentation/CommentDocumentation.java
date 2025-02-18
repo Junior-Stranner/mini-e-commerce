@@ -1,6 +1,6 @@
 package br.com.judev.backend.controller.Documentation;
 
-import br.com.judev.backend.dto.CommentDTO;
+import br.com.judev.backend.dto.requests.CommentDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 

@@ -1,4 +1,4 @@
-package br.com.judev.backend.dto;
+package br.com.judev.backend.dto.requests;
 
 
 import br.com.judev.backend.model.Order;

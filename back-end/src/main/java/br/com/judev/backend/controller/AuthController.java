@@ -1,8 +1,10 @@
 package br.com.judev.backend.controller;
 
 import br.com.judev.backend.dto.*;
+import br.com.judev.backend.dto.requests.ChangePasswordRequest;
+import br.com.judev.backend.dto.requests.EmailConfirmationRequest;
+import br.com.judev.backend.dto.requests.LoginRequest;
 import br.com.judev.backend.exception.ResourceNotFoundException;
-import br.com.judev.backend.model.User;
 import br.com.judev.backend.services.JwtService;
 import br.com.judev.backend.services.UserService;
 import jakarta.validation.Valid;
@@ -32,7 +34,7 @@ public class AuthController {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
         );
-        final UserDetails userDetails = userService.getUserByEmail(loginRequest.getEmail());
+        final UserDetails userDetails = (UserDetails) userService.getUserByEmail(loginRequest.getEmail());
         final String jwt = jwtService.generateToken(userDetails);
         return ResponseEntity.ok(jwt);
     }
@@ -44,7 +46,7 @@ public class AuthController {
     }
 
     @GetMapping
-    public List<User>ListAllUsers(){
+    public List<UserResponseDTO> ListAllUsers(){
         return userService.findAllUsers();
     }
 
@@ -74,7 +76,7 @@ public class AuthController {
     public ResponseEntity<String> getUserRole() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        User user = userService.getUserByEmail(email);
+        UserResponseDTO user = userService.getUserByEmail(email);
 
         if (user != null) {
             String role = String.valueOf(user.getRole());
@@ -86,7 +88,7 @@ public class AuthController {
     //update
     @GetMapping("/user/{id}")
     public ResponseEntity<String> getUserEmailById(@PathVariable Long id) {
-        User user = userService.getUserById(id); // Ensure this method exists in your UserService
+        UserResponseDTO user = userService.getUserById(id); // Ensure this method exists in your UserService
         if (user != null) {
             return ResponseEntity.ok(user.getEmail());
         }

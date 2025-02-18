@@ -1,7 +1,7 @@
 package br.com.judev.backend.services;
 
-import br.com.judev.backend.dto.ProductDTO;
-import br.com.judev.backend.dto.ProductListDTO;
+import br.com.judev.backend.dto.requests.ProductDTO;
+import br.com.judev.backend.dto.requests.ProductListDTO;
 import br.com.judev.backend.exception.ResourceNotFoundException;
 import br.com.judev.backend.mapper.ProductMapper;
 import br.com.judev.backend.model.Product;
@@ -70,7 +70,7 @@ public class ProductService {
     }
 
     public Page<ProductListDTO> getAllProducts(Pageable pageable) {
-        return productRepository.findAllWithoutComments(pageable);
+            return productRepository.findAllWithoutComments(pageable);
     }
 
     private String saveImage(MultipartFile image) throws  IOException{

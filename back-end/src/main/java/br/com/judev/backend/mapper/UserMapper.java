@@ -1,9 +1,7 @@
 package br.com.judev.backend.mapper;
 
-import br.com.judev.backend.dto.CommentDTO;
 import br.com.judev.backend.dto.UserRequestDTO;
 import br.com.judev.backend.dto.UserResponseDTO;
-import br.com.judev.backend.model.Comment;
 import br.com.judev.backend.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

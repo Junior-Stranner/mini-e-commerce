@@ -2,8 +2,9 @@ package br.com.judev.backend.services;
 
 import br.com.judev.backend.dto.UserRequestDTO;
 import br.com.judev.backend.dto.UserResponseDTO;
+import br.com.judev.backend.dto.responses.ChangePasswordResponseDTO;
 import br.com.judev.backend.exception.ResourceNotFoundException;
-import br.com.judev.backend.dto.ChangePasswordRequest;
+import br.com.judev.backend.dto.requests.ChangePasswordRequest;
 import br.com.judev.backend.mapper.UserMapper;
 import br.com.judev.backend.repositories.UserRepository;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -55,7 +56,7 @@ public class UserService {
         return userMapper.toDTO(user);
     }
 
-    public UserResponseDTO changePassword(String email, ChangePasswordRequest request) {
+    public ChangePasswordResponseDTO changePassword(String email, ChangePasswordRequest request) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
@@ -64,10 +65,11 @@ public class UserService {
         }
 
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
-        user = userRepository.save(user);
+        userRepository.save(user);
 
-        return userMapper.toDTO(user);
+        return new ChangePasswordResponseDTO("Password changed successfully");
     }
+
 
     public void confirmEmail(String email, String confirmationCode) {
         User user = userRepository.findByEmail(email)

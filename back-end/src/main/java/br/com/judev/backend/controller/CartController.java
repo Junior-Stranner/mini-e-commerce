@@ -1,6 +1,7 @@
 package br.com.judev.backend.controller;
 
-import br.com.judev.backend.dto.CartDTO;
+import br.com.judev.backend.dto.requests.CartDTO;
+import br.com.judev.backend.dto.responses.CartResponseDTO;
 import br.com.judev.backend.model.User;
 import br.com.judev.backend.services.CartService;
 import lombok.RequiredArgsConstructor;
@@ -19,16 +20,16 @@ public class CartController {
 
     @PostMapping("/add")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<CartDTO> addToCart(@AuthenticationPrincipal UserDetails userDetails,
-                                             @RequestParam Long productId,
-                                             @RequestParam Integer quantity){
+    public ResponseEntity<CartResponseDTO> addToCart(@AuthenticationPrincipal UserDetails userDetails,
+                                                     @RequestParam Long productId,
+                                                     @RequestParam Integer quantity){
         Long userId = ((User) userDetails).getId();
         return ResponseEntity.ok(cartService.addToCart(userId, productId, quantity));
     }
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<CartDTO> getCart(@AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<CartResponseDTO> getCart(@AuthenticationPrincipal UserDetails userDetails){
         Long userId = ((User) userDetails).getId();
         return ResponseEntity.ok(cartService.getCart(userId));
     }

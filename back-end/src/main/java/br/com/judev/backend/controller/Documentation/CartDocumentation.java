@@ -1,6 +1,6 @@
 package br.com.judev.backend.controller.Documentation;
 
-import br.com.judev.backend.dto.CartItemDTO;
+import br.com.judev.backend.dto.requests.CartItemDTO;
 import br.com.judev.backend.model.Cart;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

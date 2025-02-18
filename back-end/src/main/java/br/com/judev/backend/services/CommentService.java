@@ -1,6 +1,7 @@
 package br.com.judev.backend.services;
 
-import br.com.judev.backend.dto.CommentDTO;
+import br.com.judev.backend.dto.requests.CommentDTO;
+import br.com.judev.backend.dto.responses.CommentReponseDTO;
 import br.com.judev.backend.exception.ResourceNotFoundException;
 import br.com.judev.backend.mapper.CommentMapper;
 import br.com.judev.backend.model.Comment;
@@ -23,7 +24,7 @@ public class CommentService {
     private final UserRepository userRepository;
     private final CommentMapper commentMapper;
 
-    public CommentDTO addComment(Long productId, Long userId, CommentDTO commentDTO){
+    public CommentReponseDTO addComment(Long productId, Long userId, CommentDTO commentDTO){
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new ResourceNotFoundException("Product not found"));
         User user = userRepository.findById(userId)
@@ -36,7 +37,7 @@ public class CommentService {
         return commentMapper.toDTO(savedComment);
     }
 
-    public List<CommentDTO> getCommentsByProduct(Long productId){
+    public List<CommentReponseDTO> getCommentsByProduct(Long productId){
         List<Comment> comments = commentRepository.findByProductId(productId);
         return comments.stream()
                 .map(commentMapper::toDTO)

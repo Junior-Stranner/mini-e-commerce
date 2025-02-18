@@ -1,7 +1,7 @@
 package br.com.judev.backend.repositories;
 
 
-import br.com.judev.backend.dto.ProductListDTO;
+import br.com.judev.backend.dto.requests.ProductListDTO;
 import br.com.judev.backend.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

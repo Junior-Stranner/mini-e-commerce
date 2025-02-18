@@ -1,4 +1,4 @@
-package br.com.judev.backend.dto;
+package br.com.judev.backend.dto.requests;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;

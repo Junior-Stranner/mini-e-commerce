@@ -1,6 +1,6 @@
 package br.com.judev.backend.controller.Documentation;
 
-import br.com.judev.backend.dto.OrderDTO;
+import br.com.judev.backend.dto.requests.OrderDTO;
 import br.com.judev.backend.model.Order;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

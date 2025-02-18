@@ -1,6 +1,6 @@
 package br.com.judev.backend.controller;
 
-import br.com.judev.backend.dto.OrderDTO;
+import br.com.judev.backend.dto.requests.OrderDTO;
 import br.com.judev.backend.model.Order;
 import br.com.judev.backend.model.User;
 import br.com.judev.backend.services.OrderService;

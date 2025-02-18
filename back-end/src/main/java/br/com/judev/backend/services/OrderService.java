@@ -1,7 +1,7 @@
 package br.com.judev.backend.services;
 
-import br.com.judev.backend.dto.CartDTO;
-import br.com.judev.backend.dto.OrderDTO;
+import br.com.judev.backend.dto.requests.CartDTO;
+import br.com.judev.backend.dto.requests.OrderDTO;
 import br.com.judev.backend.exception.InsufficientStockException;
 import br.com.judev.backend.exception.ResourceNotFoundException;
 import br.com.judev.backend.mapper.CartMapper;
@@ -85,7 +85,8 @@ public class OrderService {
     }
 
     public List<OrderDTO> getAllOrders(){
-        return orderMapper.toDTOs(orderRepository.findAll());
+       List <Order> orders = orderRepository.findAll();
+    return orders.stream().map(orderMapper::toDTO).collect(Collectors.toList());
     }
 
     public List<OrderDTO> getUserOrders(Long userId){

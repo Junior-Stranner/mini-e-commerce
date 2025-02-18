@@ -1,7 +1,7 @@
 package br.com.judev.backend.controller;
 
-import br.com.judev.backend.dto.ProductDTO;
-import br.com.judev.backend.dto.ProductListDTO;
+import br.com.judev.backend.dto.requests.ProductDTO;
+import br.com.judev.backend.dto.requests.ProductListDTO;
 import br.com.judev.backend.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

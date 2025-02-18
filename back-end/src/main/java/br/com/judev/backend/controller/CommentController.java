@@ -1,6 +1,7 @@
 package br.com.judev.backend.controller;
 
-import br.com.judev.backend.dto.CommentDTO;
+import br.com.judev.backend.dto.requests.CommentDTO;
+import br.com.judev.backend.dto.responses.CommentReponseDTO;
 import br.com.judev.backend.model.User;
 import br.com.judev.backend.services.CommentService;
 import jakarta.validation.Valid;
@@ -22,15 +23,15 @@ public class CommentController {
 
     @PostMapping("/product/{productId}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<CommentDTO> addComment(@PathVariable Long productId,
-                                                 @AuthenticationPrincipal UserDetails userDetails,
-                                                 @Valid @RequestBody CommentDTO commentDTO){
+    public ResponseEntity<CommentReponseDTO> addComment(@PathVariable Long productId,
+                                                        @AuthenticationPrincipal UserDetails userDetails,
+                                                        @Valid @RequestBody CommentDTO commentDTO){
         Long userId = ((User) userDetails).getId();
         return ResponseEntity.ok(commentService.addComment(productId, userId, commentDTO));
     }
 
     @GetMapping("/product/{productId}")
-    public ResponseEntity<List<CommentDTO>> getCommentsByProduct(@PathVariable Long productId){
+    public ResponseEntity<List<CommentReponseDTO>> getCommentsByProduct(@PathVariable Long productId){
         return ResponseEntity.ok(commentService.getCommentsByProduct(productId));
     }
 }

@@ -1,12 +1,13 @@
-package br.com.judev.backend.dto;
+package br.com.judev.backend.dto.responses;
 
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class CartItemDTO {
+@NoArgsConstructor
+public class CartItemResponseDTO {
     private Long id;
     private Long productId;
-    @Positive
     private Integer quantity;
 }

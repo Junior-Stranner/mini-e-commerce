@@ -1,7 +1,7 @@
 package br.com.judev.backend.mapper;
 
-import br.com.judev.backend.dto.OrderDTO;
-import br.com.judev.backend.dto.OrderItemDTO;
+import br.com.judev.backend.dto.requests.OrderDTO;
+import br.com.judev.backend.dto.requests.OrderItemDTO;
 import br.com.judev.backend.model.Order;
 import br.com.judev.backend.model.OrderItem;
 import org.mapstruct.Mapper;

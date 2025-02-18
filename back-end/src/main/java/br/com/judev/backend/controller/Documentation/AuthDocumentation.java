@@ -1,8 +1,8 @@
 package br.com.judev.backend.controller.Documentation;
 
-import br.com.judev.backend.dto.ChangePasswordRequest;
-import br.com.judev.backend.dto.EmailConfirmationRequest;
-import br.com.judev.backend.dto.LoginRequest;
+import br.com.judev.backend.dto.requests.ChangePasswordRequest;
+import br.com.judev.backend.dto.requests.EmailConfirmationRequest;
+import br.com.judev.backend.dto.requests.LoginRequest;
 import br.com.judev.backend.model.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
