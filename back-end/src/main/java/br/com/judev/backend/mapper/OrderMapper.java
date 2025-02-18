@@ -2,6 +2,7 @@ package br.com.judev.backend.mapper;
 
 import br.com.judev.backend.dto.requests.OrderDTO;
 import br.com.judev.backend.dto.requests.OrderItemDTO;
+import br.com.judev.backend.dto.responses.OrderResponseDTO;
 import br.com.judev.backend.model.Order;
 import br.com.judev.backend.model.OrderItem;
 import org.mapstruct.Mapper;
@@ -13,13 +14,13 @@ import java.util.List;
 public interface OrderMapper {
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "orderItems", source = "items")
-    OrderDTO toDTO(Order order);
+    OrderResponseDTO toDTO(Order order);
 
     @Mapping(target = "user.id", source = "userId")
     @Mapping(target = "items", source = "orderItems")
     Order toEntity(OrderDTO orderDTO);
 
-    List<OrderDTO> toDTOs(List<Order> orders);
+    List<OrderResponseDTO> toDTOs(List<Order> orders);
     List<Order> toEntities(List<OrderDTO> orderDTOS);
     @Mapping(target = "productId", source = "product.id")
     OrderItemDTO toOrderItemDTO(OrderItem orderItem);

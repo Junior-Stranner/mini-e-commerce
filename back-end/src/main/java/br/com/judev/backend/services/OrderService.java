@@ -2,6 +2,8 @@ package br.com.judev.backend.services;
 
 import br.com.judev.backend.dto.requests.CartDTO;
 import br.com.judev.backend.dto.requests.OrderDTO;
+import br.com.judev.backend.dto.responses.CartResponseDTO;
+import br.com.judev.backend.dto.responses.OrderResponseDTO;
 import br.com.judev.backend.exception.InsufficientStockException;
 import br.com.judev.backend.exception.ResourceNotFoundException;
 import br.com.judev.backend.mapper.CartMapper;
@@ -36,13 +38,13 @@ public class OrderService {
     private final CartMapper cartMapper;
 
     @Transactional
-    public OrderDTO createOrder(Long userId, String address, String phoneNumber) {
+    public OrderResponseDTO createOrder(Long userId, String address, String phoneNumber) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         if (!user.isEmailConfirmation()) {
             throw new IllegalStateException("Email not confirmed. Please confirm email before placing order");
         }
-        CartDTO cartDTO = cartService.getCart(userId);
+        CartResponseDTO cartDTO = cartService.getCart(userId);
         Cart cart = cartMapper.toEntity(cartDTO);
 
         if(cart.getItems().isEmpty()){
@@ -84,16 +86,16 @@ public class OrderService {
         }).collect(Collectors.toList());
     }
 
-    public List<OrderDTO> getAllOrders(){
+    public List<OrderResponseDTO> getAllOrders(){
        List <Order> orders = orderRepository.findAll();
     return orders.stream().map(orderMapper::toDTO).collect(Collectors.toList());
     }
 
-    public List<OrderDTO> getUserOrders(Long userId){
+    public List<OrderResponseDTO> getUserOrders(Long userId){
         return orderMapper.toDTOs(orderRepository.findByUserId(userId));
     }
 
-    public OrderDTO updateOrderStatus(Long orderId,Order.OrderStatus status){
+    public OrderResponseDTO updateOrderStatus(Long orderId,Order.OrderStatus status){
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(()->new ResourceNotFoundException("Order not found"));
         order.setStatus(status);

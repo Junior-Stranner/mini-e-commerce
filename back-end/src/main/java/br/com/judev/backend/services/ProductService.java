@@ -2,6 +2,7 @@ package br.com.judev.backend.services;
 
 import br.com.judev.backend.dto.requests.ProductDTO;
 import br.com.judev.backend.dto.requests.ProductListDTO;
+import br.com.judev.backend.dto.responses.ProductResponseDTO;
 import br.com.judev.backend.exception.ResourceNotFoundException;
 import br.com.judev.backend.mapper.ProductMapper;
 import br.com.judev.backend.model.Product;
@@ -28,7 +29,7 @@ public class ProductService {
     private static final String UPLOAD_DIR = "src/main/recources/static/images/";
 
     @Transactional
-    public ProductDTO createProduct(ProductDTO productDTO, MultipartFile image)throws IOException{
+    public ProductResponseDTO createProduct(ProductDTO productDTO, MultipartFile image)throws IOException{
         Product product = productMapper.toEntity(productDTO);
         if(image != null && !image.isEmpty()){
             String fileName = saveImage(image);
@@ -39,7 +40,7 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDTO updateProduct(Long id, ProductDTO productDTO, MultipartFile image) throws IOException {
+    public ProductResponseDTO updateProduct(Long id, ProductDTO productDTO, MultipartFile image) throws IOException {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product Not found"));
         existingProduct.setName(productDTO.getName());
@@ -63,7 +64,7 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public ProductDTO getProduct(Long id){
+    public ProductResponseDTO getProduct(Long id){
         Product product = productRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Product not found"));
         return productMapper.toDTO(product);

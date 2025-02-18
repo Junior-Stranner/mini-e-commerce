@@ -4,6 +4,7 @@ import br.com.judev.backend.dto.*;
 import br.com.judev.backend.dto.requests.ChangePasswordRequest;
 import br.com.judev.backend.dto.requests.EmailConfirmationRequest;
 import br.com.judev.backend.dto.requests.LoginRequest;
+import br.com.judev.backend.dto.responses.LoginResponseDTO;
 import br.com.judev.backend.exception.ResourceNotFoundException;
 import br.com.judev.backend.services.JwtService;
 import br.com.judev.backend.services.UserService;
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,16 +30,19 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequest loginRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
         );
-        final UserDetails userDetails = (UserDetails) userService.getUserByEmail(loginRequest.getEmail());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());
         final String jwt = jwtService.generateToken(userDetails);
-        return ResponseEntity.ok(jwt);
+
+        return ResponseEntity.ok(new LoginResponseDTO(jwt));
     }
+
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody UserRequestDTO dto){

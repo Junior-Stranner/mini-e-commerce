@@ -2,6 +2,7 @@ package br.com.judev.backend.controller;
 
 import br.com.judev.backend.dto.requests.ProductDTO;
 import br.com.judev.backend.dto.requests.ProductListDTO;
+import br.com.judev.backend.dto.responses.ProductResponseDTO;
 import br.com.judev.backend.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,15 +26,15 @@ public class ProductController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ProductDTO> createProduct(@RequestPart("product") @Valid ProductDTO productDTO,
-                                                    @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
+    public ResponseEntity<ProductResponseDTO> createProduct(@RequestPart("product") @Valid ProductDTO productDTO,
+                                                            @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
         return ResponseEntity.ok(productService.createProduct(productDTO, image));
     }
 
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id,
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Long id,
                                                     @RequestPart("product") @Valid ProductDTO productDTO,
                                                     @RequestPart(value = "image", required = false) MultipartFile image)throws IOException{
         return ResponseEntity.ok(productService.updateProduct(id, productDTO, image));
@@ -47,7 +48,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id){
+    public ResponseEntity<ProductResponseDTO> getProduct(@PathVariable Long id){
         return ResponseEntity.ok(productService.getProduct(id));
     }
 
