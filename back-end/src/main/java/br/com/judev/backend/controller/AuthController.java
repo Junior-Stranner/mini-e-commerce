@@ -1,14 +1,13 @@
 package br.com.judev.backend.controller;
 
-import br.com.judev.backend.dto.ChangePasswordRequest;
-import br.com.judev.backend.dto.EmailConfirmationRequest;
-import br.com.judev.backend.dto.LoginRequest;
+import br.com.judev.backend.dto.*;
 import br.com.judev.backend.exception.ResourceNotFoundException;
 import br.com.judev.backend.model.User;
 import br.com.judev.backend.services.JwtService;
 import br.com.judev.backend.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -39,8 +38,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@Valid @RequestBody User user){
-        return ResponseEntity.ok(userService.registerUser(user));
+    public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody UserRequestDTO dto){
+        UserResponseDTO responseDTO = userService.registerUser(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
     @GetMapping

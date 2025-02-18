@@ -1,7 +1,10 @@
 package br.com.judev.backend.services;
 
+import br.com.judev.backend.dto.UserRequestDTO;
+import br.com.judev.backend.dto.UserResponseDTO;
 import br.com.judev.backend.exception.ResourceNotFoundException;
 import br.com.judev.backend.dto.ChangePasswordRequest;
+import br.com.judev.backend.mapper.UserMapper;
 import br.com.judev.backend.repositories.UserRepository;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,24 +20,32 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final UserMapper userMapper;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.userMapper = userMapper;
     }
 
-    public User registerUser(User user){
-        if(userRepository.findByEmail(user.getEmail()).isPresent()) {
+    public UserResponseDTO registerUser(UserRequestDTO dto) {
+        if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
             throw new IllegalStateException("Email already taken");
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        User user = userMapper.toEntity(dto);
+
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setRole(User.Role.USER);
         user.setConfirmationCode(generateConfirmationCode());
         user.setEmailConfirmation(false);
-        emailService.sendConfirmationCode(user);
-        return userRepository.save(user);
+        emailService.sendConfirmationCode(dto);
+        user = userRepository.save(user);
+
+        return userMapper.toDTO(user);
     }
+
 
     public User getUserByEmail(String email){
         return userRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("User not found"));

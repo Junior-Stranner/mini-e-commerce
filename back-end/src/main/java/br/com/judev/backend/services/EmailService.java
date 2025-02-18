@@ -1,7 +1,7 @@
 package br.com.judev.backend.services;
 
+import br.com.judev.backend.dto.UserRequestDTO;
 import br.com.judev.backend.model.Order;
-import br.com.judev.backend.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -26,12 +26,12 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public void sendConfirmationCode(User user){
+    public void sendConfirmationCode(UserRequestDTO dto){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromEmail);
-        message.setTo(user.getEmail());
+        message.setTo(dto.getEmail());
         message.setSubject("Confirm your email");
-        message.setText("Please confirm your email by entering this code " + user.getConfirmationCode());
+        message.setText("Please confirm your email by entering this code " + dto.getConfirmationCode());
         mailSender.send(message);
     }
 }
