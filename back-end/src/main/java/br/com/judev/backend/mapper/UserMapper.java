@@ -11,16 +11,15 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    @Mapping(target = "profilePicture", source = "profilePicture") // Exemplo de mapeamento direto
+    // Mapeamento de User para UserResponseDTO
+    @Mapping(target = "role", source = "role") // Mapeia o papel (role) diretamente
+    @Mapping(target = "emailConfirmation", source = "emailConfirmation") // Mapeia o status de confirmação de email
+    @Mapping(target = "confirmationCode", source = "confirmationCode") // Mapeia o código de confirmação
     UserResponseDTO toDTO(User user);
 
-    @Mapping(target = "profilePicture", source = "profilePicture") // Exemplo de mapeamento direto
-    User toEntity(UserRequestDTO userDTO);
-
-    @Mapping(target = "userId", source = "user.id")
-    CommentDTO toDTO(Comment comment);
-
-    @Mapping(target = "user.id", source = "userId")
-    @Mapping(target = "product", ignore = true)
-    Comment toEntity(CommentDTO commentDTO);
+    // Mapeamento de UserRequestDTO para User
+    @Mapping(target = "role", source = "role") // Mapeia o papel (role) diretamente
+    @Mapping(target = "emailConfirmation", ignore = true) // Ignora o emailConfirmation ao criar o usuário
+    @Mapping(target = "confirmationCode", ignore = true) // Ignora o código de confirmação ao criar o usuário
+    User toEntity(UserRequestDTO userRequestDTO);
 }

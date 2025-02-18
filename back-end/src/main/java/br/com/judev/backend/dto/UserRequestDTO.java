@@ -26,10 +26,7 @@ public class UserRequestDTO {
     private String password;
     @Enumerated(EnumType.STRING)
     private User.Role role;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Cart cart;
     private boolean emailConfirmation;
     private String confirmationCode;
-
 
 }

@@ -16,7 +16,6 @@ public class UserResponseDTO {
     private String email;
     private String password;
     private User.Role role;
-    private Cart cart;
     private boolean emailConfirmation;
     private String confirmationCode;
 }

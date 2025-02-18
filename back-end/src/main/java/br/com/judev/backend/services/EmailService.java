@@ -17,7 +17,7 @@ public class EmailService {
     private String fromEmail;
 
 
-    public void sendOrderConfirmation(Order order){
+    public void sendOrderConfirmation( Order order){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromEmail);
         message.setTo(order.getUser().getEmail());
@@ -26,12 +26,13 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public void sendConfirmationCode(UserRequestDTO dto){
+    public void sendConfirmationCode(String email, String confirmationCode){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromEmail);
-        message.setTo(dto.getEmail());
+        message.setTo(email);  // Passando o e-mail diretamente
         message.setSubject("Confirm your email");
-        message.setText("Please confirm your email by entering this code " + dto.getConfirmationCode());
+        message.setText("Please confirm your email by entering this code " + confirmationCode);
         mailSender.send(message);
     }
+
 }
